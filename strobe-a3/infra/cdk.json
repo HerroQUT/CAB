@@ -1,0 +1,11 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "studentId": "n1234567",
+    "qutUsername": "n1234567@qut.edu.au",
+    "mediaBucketName": "REPLACE_WITH_A1_MEDIA_BUCKET",
+    "vectorBucketName": "n1234567-strobe-vectors",
+    "vectorIndexName": "n1234567-strobe-content",
+    "lambdaRoleArn": null
+  }
+}

@@ -1,0 +1,200 @@
+cloudInfrastructure:
+  - type: Bedrock model
+    arn: arn:aws:bedrock:ap-southeast-2::foundation-model/google.gemma-3-12b-it
+    description: "A2: chat, vision and narration; classifies uploaded photos and drives the agent's tool loop"
+
+  - type: Bedrock model
+    arn: arn:aws:bedrock:ap-southeast-2::foundation-model/amazon.titan-embed-image-v1
+    description: "A2: multimodal embeddings; image and text queries share one vector space"
+
+  - type: DynamoDB table
+    arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-comments
+    description: "A1: comments; read by the agent for context on a post"
+
+  - type: DynamoDB table
+    arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-follows
+    description: "A1: follows; unchanged from Assessment 1"
+
+  - type: DynamoDB table
+    arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-likes
+    description: "A1: likes; unchanged from Assessment 1"
+
+  - type: DynamoDB table
+    arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-moments
+    description: "A1: moments; unchanged from Assessment 1"
+
+  - type: DynamoDB table
+    arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-posts
+    description: "A1: posts; read by the agent for album narration and date questions"
+
+  - type: DynamoDB table
+    arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-users
+    description: "A1: user accounts; the agent reads a user's own profile through the A1 API"
+
+  - type: DynamoDB table
+    arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-strobe-agent-runs
+    description: "A2: agent run log; each scheduled run records its summary and the runs it built on"
+
+  - type: DynamoDB table
+    arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-strobe-classifications
+    description: "A2: classification results (labels, caption, model, timestamp) per image"
+
+  - type: S3 bucket
+    arn: arn:aws:s3:::n11457660-s3-media
+    description: "A1: uploaded photos; now also the event source that triggers classification"
+
+  - type: Vector store
+    arn: arn:aws:s3vectors:ap-southeast-2:901444280953:bucket/n11457660-strobe-vectors/index/n11457660-strobe-content
+    description: "A2: vector index (1024-d, cosine) with userId/postId/labels metadata for per-user filtering"
+
+  - type: Lambda function
+    arn: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-moment
+    description: "A1: moment endpoints; unchanged from Assessment 1"
+
+  - type: Lambda function
+    arn: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-upload
+    description: "A1: presigned upload URLs; unchanged, classification happens after the fact"
+
+  - type: Lambda function
+    arn: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-feed
+    description: "A1: feed endpoints; unchanged from Assessment 1"
+
+  - type: Lambda function
+    arn: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-strobe-classifier
+    description: "A2: SQS worker: classifies and embeds each new image, then persists both"
+
+  - type: Lambda function
+    arn: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-auth
+    description: "A1: registration and login; issues the Cognito token the chat client signs in with"
+
+  - type: Lambda function
+    arn: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-post
+    description: "A1: post endpoints, called by the MCP server as the signed-in user"
+
+  - type: Lambda function
+    arn: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-strobe-heartbeat
+    description: "A2: scheduled agent run: writes an 'on this day' or recent recap per user"
+
+  - type: Lambda function
+    arn: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-user
+    description: "A1: user endpoints, called by the MCP server as the signed-in user"
+
+  - type: SQS queue
+    arn: arn:aws:sqs:ap-southeast-2:901444280953:n11457660-strobe-classify
+    description: "A2: queues each uploaded image for classification, decoupling it from the upload request"
+
+  - type: SQS queue
+    arn: arn:aws:sqs:ap-southeast-2:901444280953:n11457660-strobe-classify-dlq
+    description: "A2: dead letter queue for images that fail classification three times"
+
+  - type: EventBridge rule
+    arn: arn:aws:events:ap-southeast-2:901444280953:rule/n11457660-strobe-heartbeat-daily
+    description: "A2: daily schedule that triggers the retrospective agent with no user request"
+
+  - type: EventBridge rule
+    arn: arn:aws:events:ap-southeast-2:901444280953:rule/n11457660-strobe-upload-to-classify
+    description: "A2: routes S3 Object Created events for the media bucket onto the classify queue"
+
+  - type: ECS cluster
+    arn: arn:aws:ecs:ap-southeast-2:901444280953:cluster/n11457660-strobe-a2
+    description: "A2: Fargate cluster hosting the web client, agent and MCP server"
+
+  - type: MCP server
+    arn: arn:aws:ecs:ap-southeast-2:901444280953:service/n11457660-strobe-a2/n11457660-strobe-mcp
+    description: "A2: MCP server exposing read-only Strobe tools, scoped to the caller's Cognito identity"
+
+  - type: ECS service
+    arn: arn:aws:ecs:ap-southeast-2:901444280953:service/n11457660-strobe-a2/n11457660-strobe-agent
+    description: "A2: ACP agent: runs the Bedrock tool-use loop and serves the browser over WebSocket"
+
+  - type: ECS service
+    arn: arn:aws:ecs:ap-southeast-2:901444280953:service/n11457660-strobe-a2/n11457660-strobe-webui
+    description: "A2: ACP chat web client with Cognito sign-in"
+
+  - type: ECS service
+    arn: arn:aws:ecs:ap-southeast-2:901444280953:service/n11457660-strobe-a2/n11457660-strobe-worker
+    description: "TODO describe n11457660-strobe-worker"
+
+  - type: ECR repository
+    arn: arn:aws:ecr:ap-southeast-2:901444280953:repository/n11457660-strobe-mcp
+    description: "A2: container image for mcp"
+
+  - type: ECR repository
+    arn: arn:aws:ecr:ap-southeast-2:901444280953:repository/n11457660-strobe-webui
+    description: "A2: container image for webui"
+
+  - type: ECR repository
+    arn: arn:aws:ecr:ap-southeast-2:901444280953:repository/n11457660-strobe-worker
+    description: "A2: container image for worker"
+
+  - type: ECR repository
+    arn: arn:aws:ecr:ap-southeast-2:901444280953:repository/n11457660-strobe-agent
+    description: "A2: container image for agent"
+
+  - type: Cognito user pool
+    arn: arn:aws:cognito-idp:ap-southeast-2:901444280953:userpool/ap-southeast-2_gyxH5uIZM
+    description: "A1: user identity; the chat client signs in here and the MCP server verifies the token on every tool call"
+
+  - type: API Gateway HTTP API
+    arn: arn:aws:apigateway:ap-southeast-2::/apis/zu3y6kfvnh
+    description: "A1: the Strobe API; the MCP server calls it as the signed-in user so A1's authorisation rules still apply"
+
+  - type: Parameter Store parameter
+    arn: arn:aws:ssm:ap-southeast-2:901444280953:parameter/n11457660/strobe-a2/classifier/classifications-table
+    description: "A2: runtime configuration (classifications-table), read at start-up instead of being baked into images"
+
+  - type: Parameter Store parameter
+    arn: arn:aws:ssm:ap-southeast-2:901444280953:parameter/n11457660/strobe-a2/classifier/embed-model-id
+    description: "A2: runtime configuration (embed-model-id), read at start-up instead of being baked into images"
+
+  - type: Parameter Store parameter
+    arn: arn:aws:ssm:ap-southeast-2:901444280953:parameter/n11457660/strobe-a2/classifier/vector-index
+    description: "A2: runtime configuration (vector-index), read at start-up instead of being baked into images"
+
+  - type: Parameter Store parameter
+    arn: arn:aws:ssm:ap-southeast-2:901444280953:parameter/n11457660/strobe-a2/classifier/gemma-model-id
+    description: "A2: runtime configuration (gemma-model-id), read at start-up instead of being baked into images"
+
+  - type: Parameter Store parameter
+    arn: arn:aws:ssm:ap-southeast-2:901444280953:parameter/n11457660/strobe-a2/classifier/queue-url
+    description: "A2: runtime configuration (queue-url), read at start-up instead of being baked into images"
+
+  - type: Parameter Store parameter
+    arn: arn:aws:ssm:ap-southeast-2:901444280953:parameter/n11457660/strobe-a2/classifier/vector-bucket
+    description: "A2: runtime configuration (vector-bucket), read at start-up instead of being baked into images"
+
+  - type: Parameter Store parameter
+    arn: arn:aws:ssm:ap-southeast-2:901444280953:parameter/n11457660/strobe-a2/mcp/agent-runs-table
+    description: "A2: runtime configuration (agent-runs-table), read at start-up instead of being baked into images"
+
+  - type: Parameter Store parameter
+    arn: arn:aws:ssm:ap-southeast-2:901444280953:parameter/n11457660/strobe-a2/mcp/cdn-distribution-id
+    description: "A2: runtime configuration (cdn-distribution-id), read at start-up instead of being baked into images"
+
+  - type: Parameter Store parameter
+    arn: arn:aws:ssm:ap-southeast-2:901444280953:parameter/n11457660/strobe-a2/mcp/cdn-domain
+    description: "A2: runtime configuration (cdn-domain), read at start-up instead of being baked into images"
+
+  - type: Route 53 record
+    arn: arn:aws:route53:::hostedzone/Z02680423BHWEVRU2JZDQ#n11457660-webui.cab432.com
+    description: "A2: stable DNS name for the chat front end, repointed when a Fargate task restarts"
+
+  - type: Route 53 record
+    arn: arn:aws:route53:::hostedzone/Z02680423BHWEVRU2JZDQ#n11457660-agent.cab432.com
+    description: "A2: stable DNS name for the ACP WebSocket endpoint, repointed when a Fargate task restarts"
+
+  - type: Route 53 record
+    arn: arn:aws:route53:::hostedzone/Z02680423BHWEVRU2JZDQ#n11457660-mcp.cab432.com
+    description: "A2: stable DNS name for the MCP server, repointed when a Fargate task restarts"
+
+  - type: Application Auto Scaling policy
+    arn: arn:aws:autoscaling:ap-southeast-2:901444280953:scalingPolicy:7f9a2038-d23d-4a77-96dc-0baaf8cb8dcc:resource/ecs/service/n11457660-strobe-a2/n11457660-strobe-worker:policyName/n11457660-strobe-worker-scale-out
+    description: "Step policy that adds workers as the queue grows."
+
+  - type: Application Auto Scaling policy
+    arn: arn:aws:autoscaling:ap-southeast-2:901444280953:scalingPolicy:7f9a2038-d23d-4a77-96dc-0baaf8cb8dcc:resource/ecs/service/n11457660-strobe-a2/n11457660-strobe-worker:policyName/n11457660-strobe-worker-scale-in
+    description: "Step policy that returns the worker pool to zero when idle."
+
+metaData:
+  track: "A"
+  qutUsernameTag: n11457660@qut.edu.au
