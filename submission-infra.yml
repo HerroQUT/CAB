@@ -1,0 +1,42 @@
+cloudInfrastructure:
+  apiGatewayExecutionARN: arn:aws:execute-api:ap-southeast-2:901444280953:zu3y6kfvnh
+  apiGatewayStageARN: arn:aws:apigateway:ap-southeast-2::/apis/zu3y6kfvnh/stages/$default
+  apiRoute53Record: n11457660.cab432.com
+  certificateARN: arn:aws:acm:ap-southeast-2:901444280953:certificate/09a7ac8f-305c-4985-80c3-680a02530fbe
+  cognitoARN: arn:aws:cognito-idp:ap-southeast-2:901444280953:userpool/ap-southeast-2_gyxH5uIZM
+  dynamoDBPostsTableARN: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-posts
+  s3MediaStoreARN: arn:aws:s3:::n11457660-s3-media
+  dynamoDBTableARNs:
+    - entity: user
+      arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-users
+    - entity: post
+      arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-posts
+    - entity: comment
+      arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-comments
+    - entity: like
+      arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-likes
+    - entity: follow
+      arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-follows
+    - entity: moment
+      arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-moments
+  lambdaARN:
+    - controller: auth
+      arn: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-auth
+    - controller: feed
+      arn: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-feed
+    - controller: moment
+      arn: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-moment
+    - controller: post
+      arn: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-post
+    - controller: user
+      arn: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-user
+    - controller: upload
+      arn: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-upload
+  metaData:
+    qutUsernameTag: n11457660@qut.edu.au
+    testUsername: test1@example.com
+    testPassword: password123
+studentDetail:
+  studentID: n11457660
+  studentFirstName: Herro
+  studentLastName: Ngejane

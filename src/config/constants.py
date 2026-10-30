@@ -1,0 +1,28 @@
+from __future__ import annotations
+
+MAX_USERNAME_LENGTH = 30
+MIN_USERNAME_LENGTH = 3
+MIN_PASSWORD_LENGTH = 6
+MAX_POST_TITLE_LENGTH = 500
+MAX_POST_DESCRIPTION_LENGTH = 5000
+MAX_COMMENT_LENGTH = 1000
+MAX_MOMENT_CAPTION_LENGTH = 500
+MAX_IMAGES_PER_POST = 5
+MAX_UPLOAD_SIZE = 10 * 1024 * 1024
+TOKEN_EXPIRY_HOURS = 24
+MOMENT_DURATION_HOURS = 24
+FOLLOW_LIMIT = 100
+DEFAULT_LIST_LIMIT = 20
+DEFAULT_SEARCH_LIMIT = 10
+UPLOAD_URL_EXPIRY_SECONDS = 300  # <=5 minutes per User Story 7
+DOWNLOAD_URL_EXPIRY_SECONDS = 300  # short-lived media access per User Story 8/9
+
+ROLE_USER = "user"
+ROLE_MODERATOR = "moderator"
+
+VALID_IMAGE_MIMETYPES = {
+    "image/jpeg": "jpg",
+    "image/png": "png",
+    "image/gif": "gif",
+    "image/webp": "webp",
+}

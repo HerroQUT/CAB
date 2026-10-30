@@ -1,0 +1,14 @@
+{
+  "app": "python3 app.py",
+  "context": {
+    "studentId": "n11457660",
+    "subdomain": "n11457660.cab432.com",
+    "hostedZoneId": "Z02680423BHWEVRU2JZDQ",
+    "hostedZoneName": "cab432.com",
+    "qutUsername": "n11457660@qut.edu.au",
+    "lambdaRoleArn": "arn:aws:iam::901444280953:role/CAB432-Lambda-Role",
+    "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
+    "@aws-cdk/core:checkSecretUsage": true,
+    "@aws-cdk/core:target-partitions": ["aws"]
+  }
+}

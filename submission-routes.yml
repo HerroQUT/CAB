@@ -1,0 +1,359 @@
+routing:
+  - route: /v1/auth/register
+    method: POST
+    controller: auth
+    apiGatewayRoute: "POST /v1/auth/register"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-auth
+    storage:
+      {
+        entity: user,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-users,
+      }
+    additionalStorage: []
+
+  - route: /v1/auth/login
+    method: POST
+    controller: auth
+    apiGatewayRoute: "POST /v1/auth/login"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-auth
+    storage:
+      {
+        entity: user,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-users,
+      }
+    additionalStorage: []
+
+  - route: /v1/posts
+    method: POST
+    controller: post
+    apiGatewayRoute: "POST /v1/posts"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-post
+    storage:
+      {
+        entity: post,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-posts,
+      }
+    additionalStorage: []
+
+  - route: /v1/posts/user/{userId}
+    method: GET
+    controller: post
+    apiGatewayRoute: "GET /v1/posts/user/{userId}"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-post
+    storage:
+      {
+        entity: post,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-posts,
+      }
+    additionalStorage: []
+
+  - route: /v1/posts/{id}
+    method: GET
+    controller: post
+    apiGatewayRoute: "GET /v1/posts/{id}"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-post
+    storage:
+      {
+        entity: post,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-posts,
+      }
+    additionalStorage:
+      - { entity: s3, arn: arn:aws:s3:::n11457660-s3-media }
+
+  - route: /v1/posts/{id}
+    method: PUT
+    controller: post
+    apiGatewayRoute: "PUT /v1/posts/{id}"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-post
+    storage:
+      {
+        entity: post,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-posts,
+      }
+    additionalStorage: []
+
+  - route: /v1/posts/{id}
+    method: DELETE
+    controller: post
+    apiGatewayRoute: "DELETE /v1/posts/{id}"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-post
+    storage:
+      {
+        entity: post,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-posts,
+      }
+    additionalStorage:
+      - {
+          entity: comment,
+          arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-comments,
+        }
+      - {
+          entity: like,
+          arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-likes,
+        }
+      - { entity: s3, arn: arn:aws:s3:::n11457660-s3-media }
+
+  - route: /v1/posts/{id}/like
+    method: POST
+    controller: post
+    apiGatewayRoute: "POST /v1/posts/{id}/like"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-post
+    storage:
+      {
+        entity: like,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-likes,
+      }
+    additionalStorage: []
+
+  - route: /v1/posts/{id}/like
+    method: DELETE
+    controller: post
+    apiGatewayRoute: "DELETE /v1/posts/{id}/like"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-post
+    storage:
+      {
+        entity: like,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-likes,
+      }
+    additionalStorage: []
+
+  - route: /v1/posts/{id}/hide
+    method: POST
+    controller: post
+    apiGatewayRoute: "POST /v1/posts/{id}/hide"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-post
+    storage:
+      {
+        entity: post,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-posts,
+      }
+    additionalStorage: []
+
+  - route: /v1/posts/{postId}/comments
+    method: POST
+    controller: post
+    apiGatewayRoute: "POST /v1/posts/{postId}/comments"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-post
+    storage:
+      {
+        entity: comment,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-comments,
+      }
+    additionalStorage: []
+
+  - route: /v1/posts/{postId}/comments
+    method: GET
+    controller: post
+    apiGatewayRoute: "GET /v1/posts/{postId}/comments"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-post
+    storage:
+      {
+        entity: comment,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-comments,
+      }
+    additionalStorage: []
+
+  - route: /v1/posts/{postId}/comments/{commentId}
+    method: DELETE
+    controller: post
+    apiGatewayRoute: "DELETE /v1/posts/{postId}/comments/{commentId}"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-post
+    storage:
+      {
+        entity: comment,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-comments,
+      }
+    additionalStorage: []
+
+  - route: /v1/feed
+    method: GET
+    controller: feed
+    apiGatewayRoute: "GET /v1/feed"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-feed
+    storage:
+      {
+        entity: post,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-posts,
+      }
+    additionalStorage:
+      - {
+          entity: follow,
+          arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-follows,
+        }
+
+  - route: /v1/users
+    method: GET
+    controller: user
+    apiGatewayRoute: "GET /v1/users"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-user
+    storage:
+      {
+        entity: user,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-users,
+      }
+    additionalStorage: []
+
+  - route: /v1/users/{id}
+    method: GET
+    controller: user
+    apiGatewayRoute: "GET /v1/users/{id}"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-user
+    storage:
+      {
+        entity: user,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-users,
+      }
+    additionalStorage: []
+
+  - route: /v1/users/{id}
+    method: DELETE
+    controller: user
+    apiGatewayRoute: "DELETE /v1/users/{id}"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-user
+    storage:
+      {
+        entity: user,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-users,
+      }
+    additionalStorage:
+      - {
+          entity: post,
+          arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-posts,
+        }
+      - {
+          entity: comment,
+          arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-comments,
+        }
+      - {
+          entity: like,
+          arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-likes,
+        }
+      - {
+          entity: follow,
+          arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-follows,
+        }
+      - {
+          entity: moment,
+          arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-moments,
+        }
+      - { entity: s3, arn: arn:aws:s3:::n11457660-s3-media }
+
+  - route: /v1/users/{userId}/follow
+    method: POST
+    controller: user
+    apiGatewayRoute: "POST /v1/users/{userId}/follow"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-user
+    storage:
+      {
+        entity: follow,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-follows,
+      }
+    additionalStorage: []
+
+  - route: /v1/users/{userId}/follow
+    method: DELETE
+    controller: user
+    apiGatewayRoute: "DELETE /v1/users/{userId}/follow"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-user
+    storage:
+      {
+        entity: follow,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-follows,
+      }
+    additionalStorage: []
+
+  - route: /v1/users/{userId}/followers
+    method: GET
+    controller: user
+    apiGatewayRoute: "GET /v1/users/{userId}/followers"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-user
+    storage:
+      {
+        entity: follow,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-follows,
+      }
+    additionalStorage: []
+
+  - route: /v1/users/{userId}/following
+    method: GET
+    controller: user
+    apiGatewayRoute: "GET /v1/users/{userId}/following"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-user
+    storage:
+      {
+        entity: follow,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-follows,
+      }
+    additionalStorage: []
+
+  - route: /v1/uploads/url
+    method: POST
+    controller: upload
+    apiGatewayRoute: "POST /v1/uploads/url"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-upload
+    storage: { entity: s3, arn: arn:aws:s3:::n11457660-s3-media }
+    additionalStorage: []
+
+  - route: /v1/moments
+    method: POST
+    controller: moment
+    apiGatewayRoute: "POST /v1/moments"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-moment
+    storage:
+      {
+        entity: moment,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-moments,
+      }
+    additionalStorage: []
+
+  - route: /v1/moments/feed
+    method: GET
+    controller: moment
+    apiGatewayRoute: "GET /v1/moments/feed"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-moment
+    storage:
+      {
+        entity: moment,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-moments,
+      }
+    additionalStorage:
+      - {
+          entity: follow,
+          arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-follows,
+        }
+
+  - route: /v1/moments/archive
+    method: GET
+    controller: moment
+    apiGatewayRoute: "GET /v1/moments/archive"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-moment
+    storage:
+      {
+        entity: moment,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-moments,
+      }
+    additionalStorage: []
+
+  - route: /v1/moments/{id}/hide
+    method: POST
+    controller: moment
+    apiGatewayRoute: "POST /v1/moments/{id}/hide"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-moment
+    storage:
+      {
+        entity: moment,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-moments,
+      }
+    additionalStorage: []
+
+  - route: /v1/moments/{id}
+    method: DELETE
+    controller: moment
+    apiGatewayRoute: "DELETE /v1/moments/{id}"
+    lambdaARN: arn:aws:lambda:ap-southeast-2:901444280953:function:n11457660-lambda-moment
+    storage:
+      {
+        entity: moment,
+        arn: arn:aws:dynamodb:ap-southeast-2:901444280953:table/n11457660-ddb-moments,
+      }
+    additionalStorage: []
